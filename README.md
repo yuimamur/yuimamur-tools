@@ -1,4 +1,4 @@
 # yuimamur-tools
-This repo includes malware and ransomware tool so please don't use.
+This repository includes malware and ransomware tools, so please do not use them. I am not responsible for any trouble that may occur."
 <br>
-I am not responsible for any trouble if a problem occurs.
+
