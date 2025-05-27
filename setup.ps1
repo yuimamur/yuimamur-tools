@@ -60,6 +60,10 @@ Write-Host "Configuring internet proxy..."
 try {
     reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable /t REG_DWORD /d 1 /f
     reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer /t REG_SZ /d 'http://10.0.1.5:8080' /f
+
+    # 追加: 自動検出を無効にする（WinINET用設定）
+    reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v AutoDetect /t REG_DWORD /d 0 /f
+
     Write-Host "Proxy configuration completed"
 } catch {
     Write-Warning "Failed to configure proxy: $_"
@@ -95,6 +99,16 @@ try {
     Write-Host "Windows Update paused until $pauseUntil"
 } catch {
     Write-Warning "Failed to pause Windows Update: $_"
+}
+
+# ========== Set System Environment Variables for Proxy ==========
+Write-Host "Setting system environment variables for proxy..."
+try {
+    [Environment]::SetEnvironmentVariable("HTTPS_PROXY", "https://10.0.1.5:8080", "Machine")
+    [Environment]::SetEnvironmentVariable("HTTP_PROXY", "http://10.0.1.5:8080", "Machine")
+    Write-Host "Environment variables set: HTTPS_PROXY and HTTP_PROXY"
+} catch {
+    Write-Warning "Failed to set environment variables: $_"
 }
 
 # ========== Final Message ==========
